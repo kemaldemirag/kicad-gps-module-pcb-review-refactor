@@ -144,7 +144,13 @@ def main() -> int:
     output_path.write_text(json.dumps(result, indent=2) + "\n")
 
     print(f"ERC: {result['erc']['total']} violations across {len(result['erc']['sheets'])} sheet(s)")
+    print("  by_type:", json.dumps(result["erc"]["by_type"]))
+    print("  by_severity:", json.dumps(result["erc"]["by_severity"]))
     print(f"DRC: {result['drc']['total']} violations, {len(result['drc']['nets_involved'])} nets involved")
+    print("  by_type:", json.dumps(result["drc"]["by_type"]))
+    print("  by_severity:", json.dumps(result["drc"]["by_severity"]))
+    print(f"  unconnected_items: {result['drc']['unconnected_items']}")
+    print(f"  schematic_parity_issues: {result['drc']['schematic_parity_issues']}")
     print(f"Written: {output_path}")
     return 0
 
