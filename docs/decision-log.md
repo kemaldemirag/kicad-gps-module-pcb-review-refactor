@@ -62,3 +62,34 @@ instead of editing the original.
   already-closed work. `docs/source-register.md` remains the single source of
   truth for the pinned commit and file hashes.
 - **Status**: PROPOSED
+
+---
+
+## DEC-009 — G-ANNOT's five-record entry criterion does not match real erc.json
+
+- **Date**: 2026-08-19
+- **Decision**: Not a decision -- a flagged discrepancy pending one. Stage 1
+  of `automation/validation-pipeline.md` was executed for real against the
+  pinned reference candidate in CI (`kicad-baseline.yml`, run #6/#7, both
+  green): `kicad-cli sch erc` against `mosaicG5_RPi_HAT.kicad_sch` produced
+  **221 violations across 1 sheet**, not the five records
+  `docs/gates/g-annot-contract.md`'s entry criterion requires ("The artifact
+  contains exactly five records for this run"). `automation/scripts/
+  signal_plane_extract.py`'s ERC summary (`by_type`/`by_severity` counts) is
+  the source of this number, itself built from the same erc.json schema
+  documented in `automation/validation-pipeline.md` Stage 3.
+- **Options, not yet chosen between**:
+  1. G-ANNOT's "five records" referred to a specific triage batch (e.g. a
+     manually curated subset, matching `docs/label-dictionary.md`'s
+     `P1-RF-ADJACENT` / `REF-F-009` references) rather than the full ERC
+     output -- the gate's entry criterion needs rewording to say so.
+  2. The gate was scoped against stale or partial data and needs its
+     criterion changed to match real erc.json volume (e.g. "N records" or
+     a filtered subset by severity/type).
+- **Impact**: G-ANNOT cannot run as literally specified against the real
+  erc.json. Not resolved here -- `docs/gates/g-annot-contract.md` and
+  `docs/decision-log.md` DEC-007 (which anticipated a five-record run) were
+  authored by a different session; changing them unilaterally risks
+  contradicting a decision already in flight. Left `PROPOSED` for whoever
+  owns that gate to reconcile.
+- **Status**: PROPOSED
