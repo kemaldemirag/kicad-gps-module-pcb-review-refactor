@@ -1,0 +1,63 @@
+{
+  "source_run": {
+    "workflow": ".github/workflows/kicad-baseline.yml",
+    "run_id": 32300615204,
+    "run_url": "https://github.com/kemaldemirag/kicad-gps-module-pcb-review-refactor/actions/runs/32300615204",
+    "commit": "e23c3b6c06b0de62dbf36fbe7f39ea6a5eb8a5d3",
+    "kicad_cli_version": "10.0.5",
+    "date_utc": "2026-08-19T20:50:05",
+    "d2_reproducibility": "PASSED"
+  },
+  "reference_project": {
+    "candidate": "septentrio-gnss/mosaicG5-HAT",
+    "pinned_commit": "4936e8169b24b613ead996b778399cd3cce22721",
+    "vendored_path": "hardware/reference/mosaicG5-HAT"
+  },
+  "erc": {
+    "total": 221,
+    "sheets": 1,
+    "by_type": {
+      "lib_symbol_issues": 113,
+      "footprint_link_issues": 63,
+      "pin_not_connected": 23,
+      "pin_to_pin": 15,
+      "power_pin_not_driven": 5,
+      "multiple_net_names": 1,
+      "no_connect_dangling": 1
+    },
+    "by_severity": {
+      "warning": 189,
+      "error": 32
+    }
+  },
+  "drc": {
+    "total": 385,
+    "nets_involved": 23,
+    "by_type": {
+      "text_thickness": 68,
+      "silk_over_copper": 58,
+      "lib_footprint_issues": 55,
+      "silk_overlap": 48,
+      "clearance": 47,
+      "isolated_copper": 20,
+      "malformed_courtyard": 20,
+      "solder_mask_bridge": 14,
+      "annular_width": 12,
+      "shorting_items": 9,
+      "track_dangling": 8,
+      "text_height": 6,
+      "hole_clearance": 4,
+      "drill_out_of_range": 4,
+      "starved_thermal": 4,
+      "copper_edge_clearance": 3,
+      "courtyards_overlap": 3,
+      "via_diameter": 2
+    },
+    "by_severity": {
+      "warning": 263,
+      "error": 122
+    },
+    "unconnected_items": 0,
+    "schematic_parity_issues": 0
+  }
+}
