@@ -47,6 +47,17 @@ Actions:
 - Diff the two normalized outputs. A pass requires byte-identical output; any
   difference blocks the gate and must be triaged as a runner bug, not waived.
 
+Confirmed against real kicad-cli 10.0.5 output (CI run #3, 2026-08-19): two
+independent runs against the same pinned input found the exact same ERC/DRC
+results, but the raw JSON differed for two reasons, both non-semantic:
+1. a top-level `date` field (wall-clock timestamp of the run), and
+2. `drc.json`'s `violations` array is not stably ordered -- same violations,
+   different sequence.
+`reproducibility_check.py`'s canonicalizer strips `date` and sorts list
+contents to normalize both away. This is why the check needed a real run to
+finish: guessing these in advance would have meant asserting kicad-cli
+internals nobody had verified.
+
 This is the check the README's "D2 reproducibility" claim refers to. It belongs
 in this pipeline as a repeatable, re-runnable script — not as a one-time claim
 in prose.

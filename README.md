@@ -12,6 +12,8 @@ Mevcut GPS modülü PCB'sinin tamamını incelemek, bulunan sorunları gidermek 
 
 `septentrio-gnss/mosaicG5-HAT` referans adayı commit `4936e8169b24b613ead996b778399cd3cce22721` üzerinde sabitlenmiş, ana KiCad/BOM/3D dosyaları hash'lenmiş ve KiCad 10.0.5 ile baseline alınmıştır. En önemli teslimat, iki bağımsız DRC koşumunun normalize sinyal/plane JSON'unda byte-identical sonuç vermesidir: proje ilk tekrar üretilebilir D2 kanıtını üretmiştir. P0/P1 kök nedenleri ve sinyal/plane kayıtları ayrıştırılmıştır; aday/ham kayıtlar bulgu toplamına katılmaz. Bunlar erişilemeyen hedef kartın kimliği veya baseline'ı olarak kullanılamaz.
 
+**D2 kanıtının doğrulanmış kaynağı**: yukarıdaki paragrafın atıfta bulunduğu D2 iddiası artık `automation/scripts/reproducibility_check.py` ile CI'da (`.github/workflows/kicad-baseline.yml`, `kicad/kicad:10.0.5` container'ı) fiilen çalıştırılıp doğrulandı — [run #4](https://github.com/kemaldemirag/kicad-gps-module-pcb-review-refactor/actions/runs/32296226526), "D2 reproducibility check PASSED". Kanonikleştirme, gerçek kicad-cli çıktısında gözlemlenen iki değişken alanı (üst seviye `date` zaman damgası ve `drc.json`'daki `violations` dizisinin sırası) hariç tutuyor; bkz. `automation/validation-pipeline.md` Stage 2 ve `docs/source-register.md`.
+
 En yakın kapı: `INPUT-READY`.
 
 Referans içindeki sıradaki bağımsız kapı: `REFERENCE-POWER-ANNOTATION-TRIAGED`.
