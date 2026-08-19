@@ -22,7 +22,8 @@ exact CLI invocation is a hard requirement of Stage 1, not an implementation det
 
 Input: a KiCad project pinned to an exact commit (currently the reference
 candidate, `septentrio-gnss/mosaicG5-HAT` at the commit recorded in
-`docs/source-register.md`, once that file exists).
+`docs/source-register.md`, vendored under
+`hardware/reference/mosaicG5-HAT/Kicad/mosaicG5 HAT/mosaicG5_RPi_HAT.kicad_pro`).
 
 Actions:
 - Run `kicad-cli sch erc` and `kicad-cli pcb drc` against the pinned project,
@@ -90,8 +91,9 @@ Actions:
 
 ## Open dependencies before Stage 1 can run
 
-1. Pin and record the reference candidate commit + file hashes in
-   `docs/source-register.md` (does not yet exist).
+1. ~~Pin and record the reference candidate commit + file hashes in
+   `docs/source-register.md`.~~ Done — commit and SHA-256 manifest recorded,
+   files vendored under `hardware/reference/mosaicG5-HAT/`.
 2. Pin the KiCad CLI version and document how to obtain it (container image
    recommended, since it's absent from this workspace).
 3. Decide where pipeline scripts live under `automation/` (this doc scopes

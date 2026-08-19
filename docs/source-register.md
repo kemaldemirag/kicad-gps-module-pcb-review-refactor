@@ -20,11 +20,12 @@ claim without re-checking.
   version `20260206`). This confirms KiCad 10.0.x; the specific patch level
   (10.0.5, per prior status notes) is not independently derivable from the
   file header alone.
-- **Vendoring status**: NOT vendored into this repository yet. The clone
-  used for verification lives outside this repo's tree
-  (`/workspace/septentrio-gnss/mosaicg5-hat`, session-local). Copying files
-  into `hardware/` is a separate decision — do it deliberately, with
-  attribution, not as a side effect of hashing.
+- **Vendoring status**: Vendored under `hardware/reference/mosaicG5-HAT/`
+  (KiCad project tree, custom footprint, referenced 3D STEP models, BOM).
+  All five hashed files re-hashed post-copy and matched this manifest
+  byte-for-byte. See `hardware/reference/mosaicG5-HAT/ATTRIBUTION.md` for
+  license/attribution terms. Pictures, firmware helper scripts, and prose
+  documentation from the source repo were intentionally not vendored.
 
 ### File manifest (SHA-256, core KiCad + BOM sources)
 
