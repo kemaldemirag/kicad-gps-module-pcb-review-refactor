@@ -12,6 +12,7 @@ observed -- don't guess at kicad-cli's JSON schema in advance of seeing it.
 """
 
 import argparse
+import difflib
 import json
 import subprocess
 import sys
@@ -60,6 +61,19 @@ def diff_runs(dir_a: Path, dir_b: Path) -> bool:
             print(f"NOT BYTE-IDENTICAL after canonicalization: {name}", file=sys.stderr)
             print(f"  run A: {file_a}", file=sys.stderr)
             print(f"  run B: {file_b}", file=sys.stderr)
+            diff_lines = list(
+                difflib.unified_diff(
+                    canon_a.splitlines(),
+                    canon_b.splitlines(),
+                    fromfile=f"run-a/{name}",
+                    tofile=f"run-b/{name}",
+                    lineterm="",
+                )
+            )
+            for line in diff_lines[:60]:
+                print(f"  {line}", file=sys.stderr)
+            if len(diff_lines) > 60:
+                print(f"  ... ({len(diff_lines) - 60} more diff lines omitted)", file=sys.stderr)
             ok = False
         else:
             print(f"OK: {name} matches across both runs.")
