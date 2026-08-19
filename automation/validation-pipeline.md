@@ -64,17 +64,32 @@ in prose.
 
 ### Stage 3 — Signal/plane analysis (read-only)
 
-Purpose: extract a normalized, reviewable summary of nets, planes, and
-proximity-relevant geometry from the DRC baseline, for human triage — without
-mutating the KiCad source.
+Purpose: extract a normalized, reviewable summary of ERC/DRC violations —
+by type, severity, and (for DRC) net — from a Stage 1 run, for human triage,
+without mutating the KiCad source.
 
-Actions:
-- Parse `drc.json` (and PCB geometry as needed) into the same normalized
-  signal/plane JSON schema used in Stage 2.
-- No numeric RF/DFM thresholds are invented here; the tool reports what the
-  KiCad rules already flagged plus structural facts (net class, plane
-  adjacency), and leaves rule authorship to the frozen rule set (`RULES-FROZEN`
-  gate), sourced from real datasheets/stack-up once available.
+Implemented: `automation/scripts/signal_plane_extract.py`, run in CI
+(`kicad-baseline.yml`) against `evidence/reproducibility-checks/run-a`,
+writing `signal-plane.json` alongside it (picked up by the same artifact
+upload). Written against the real erc.json/drc.json schema observed in CI
+run #6 (2026-08-19), not a guessed one:
+- `erc.json` nests violations per-sheet (`sheets[].violations`), not at the
+  top level; `drc.json` has a flat top-level `violations` list.
+- Net names are only extracted from DRC item descriptions (`Track [NetName]
+  on F.Cu`, etc.) — ERC item descriptions use the same `[...]` bracket
+  syntax for the pin's electrical type (`Symbol #PWR2 Pin 1 [Power input,
+  Line]`), which is not a net name. An earlier version of this script
+  conflated the two and mislabeled pin types as nets; fixed and verified
+  against a fixture built from real CI output before this landed.
+
+Scope limit, stated plainly: this only summarizes what's already in the
+ERC/DRC report JSON (violation counts, involved net names). True net-class
+and copper-plane-adjacency analysis needs the raw `.kicad_pcb` geometry/zone
+data, which no parser here reads yet — that's future work, not claimed done.
+No numeric RF/DFM thresholds are invented; only what KiCad's own rules
+already flagged is reported. Rule authorship still belongs to the frozen
+rule set (`RULES-FROZEN` gate), sourced from real datasheets/stack-up once
+available.
 
 Output: the signal/plane JSON consumed by `docs/reference-signal-plane-triage.md`-
 style triage records.

@@ -41,24 +41,8 @@ jobs:
       - name: Run Stage 1 + Stage 2 (D2 reproducibility check)
         run: python3 automation/scripts/reproducibility_check.py
 
-      - name: TEMP -- inspect erc.json/drc.json schema for Stage 3
-        run: |
-          python3 - <<'PY'
-          import json
-          for name in ("erc", "drc"):
-              path = f"evidence/reproducibility-checks/run-a/{name}.json"
-              data = json.load(open(path))
-              print(f"=== {name}.json top-level keys ===")
-              print(sorted(data.keys()))
-              for k, v in data.items():
-                  if isinstance(v, list):
-                      print(f"--- {name}.{k}: list, len={len(v)} ---")
-                      if v and isinstance(v[0], dict):
-                          print("  sample keys:", sorted(v[0].keys()))
-                          print("  sample:", json.dumps(v[0], indent=2)[:1500])
-                      elif v:
-                          print("  sample:", v[0])
-          PY
+      - name: Run Stage 3 (signal/plane extraction)
+        run: python3 automation/scripts/signal_plane_extract.py --run-dir evidence/reproducibility-checks/run-a
 
       - name: Upload evidence
         if: always()
