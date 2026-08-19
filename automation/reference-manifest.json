@@ -1,0 +1,14 @@
+{
+  "candidate": "septentrio-gnss/mosaicG5-HAT",
+  "commit": "4936e8169b24b613ead996b778399cd3cce22721",
+  "vendored_root": "hardware/reference/mosaicG5-HAT",
+  "sch_entry": "Kicad/mosaicG5 HAT/mosaicG5_RPi_HAT.kicad_sch",
+  "pcb_entry": "Kicad/mosaicG5 HAT/mosaicG5_RPi_HAT.kicad_pcb",
+  "files": {
+    "Kicad/mosaicG5 HAT/mosaicG5_RPi_HAT.kicad_pro": "9e8613709c8b093200f91cd5fe0ed0b1b9d2612d1750db3cc15d856bd4f331d5",
+    "Kicad/mosaicG5 HAT/mosaicG5_RPi_HAT.kicad_sch": "b95157dda3393170038c97b711a854b39379e9ee580b01f66011e24e53260f59",
+    "Kicad/mosaicG5 HAT/mosaicG5_RPi_HAT.kicad_pcb": "5b5f13a4ea0cac1e25a0aa58c7cfd02423d5cf2dde5a2da25c5df4a54e86e3cb",
+    "Kicad/mosaci-G5/LGA54_MOSAIC-MINI_SEP.kicad_mod": "15ea6c8edea7cd8e9e37724fb835fab8700efac1bffb541710af3dde6ffdf2f7",
+    "BOM.xlsx": "e130ac908154d3e4f5d9092485914d9f93fff96652cfe1a9c4e846ba48703459"
+  }
+}

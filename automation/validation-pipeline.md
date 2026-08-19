@@ -99,5 +99,14 @@ Actions:
    executed: this session has no running Docker daemon, so Stage 1 still
    needs to actually be run (dev machine or CI) before any `erc.json`/
    `drc.json` exists.
-3. Decide where pipeline scripts live under `automation/` (this doc scopes
-   them; no implementation script exists yet).
+3. ~~Decide where pipeline scripts live under `automation/`.~~ Done —
+   `automation/scripts/baseline_runner.py` (Stage 1) and
+   `automation/scripts/reproducibility_check.py` (Stage 2, the D2 check)
+   exist and are hash-verified against `automation/reference-manifest.json`.
+   The fail-closed hash check has been exercised locally (clean pass, and a
+   deliberately tampered file correctly blocked with exit code 2). The
+   kicad-cli invocation itself is untested — this workspace has no working
+   kicad-cli (see `automation/environment.md`) — so `erc.json`/`drc.json`
+   output and the actual D2 pass/fail result do not exist yet. Run
+   `reproducibility_check.py` inside the pinned `kicad/kicad:10.0.5`
+   container to produce them.
