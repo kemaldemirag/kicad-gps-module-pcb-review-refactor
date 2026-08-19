@@ -1,6 +1,13 @@
 # KiCad GPS Module PCB Review and Refactor
 
-17.08.2026 tarihli `Refactor PCB GPS Module in KiCAD` Upwork ilanından türetilmiş bağımsız referans/portföy çalışma alanıdır.
+17.08.2026 tarihli `Refactor PCB GPS Module in KiCAD` Upwork ilanından türetilmiş bağımsız referans/portföy çalışma alanıdır. **Gerçek bir müşteri girdisi henüz yok**; bu repo, o girdi geldiğinde kullanılacak inceleme sürecini gerçek bir açık kaynak GPS PCB'si (`septentrio-gnss/mosaicG5-HAT`) üzerinde uçtan uca çalışır durumda gösteriyor.
+
+## Bu çalışma neyi gösteriyor
+
+- **Bağımsız doğrulanmış kaynak**: referans PCB projesi hash'lenip commit'e sabitlendi, iddia edilen her ayrıntı (commit, KiCad sürümü, lisans) bu oturumda yeniden kontrol edildi.
+- **Gerçek, tekrarlanabilir CI**: `kicad-cli 10.0.5` içeren bir container'da ERC/DRC gerçekten çalışıyor; iki bağımsız koşum birebir aynı sonucu veriyor (D2 kanıtı — bkz. [CI çalıştırmaları](https://github.com/kemaldemirag/kicad-gps-module-pcb-review-refactor/actions)), iddia değil, tekrarlanabilir kanıt.
+- **Otomatik özet çıkarımı**: ERC/DRC ham çıktısı `by_type`/`by_severity` dökümüne indirgeniyor ve kalıcı kanıt olarak commit ediliyor (`evidence/`) — CI logu silinse bile kaybolmuyor.
+- **Net kapsam sınırları**: hiçbir sayısal RF/DFM kuralı uydurulmuyor, hiçbir mühendislik yargısı (bu bulgu "kritik"tir gibi) otomatik üretilmiyor; bunlar insan incelemesi gerektiriyor ve öyle işaretleniyor.
 
 ## Kaynakta doğrulanan hedef
 
@@ -28,38 +35,36 @@ INPUT-BLOCKED -> INPUT-READY -> BASELINED -> RULES-FROZEN
 
 ## Çalışma alanları
 
-- `hardware`: Kabul edilen KiCad şematik, PCB, kitaplık ve ilgili donanım kaynakları. Kaynak adayı henüz vendored edilmemiştir.
-- `docs`: girdi envanteri, açık sorular, kaynak kaydı, bulgular, kural izlenebilirliği ve waiver politikası.
-- `automation`: KiCad CLI baseline runner'ı, contract fixture'ı ve salt-okunur signal/plane analiz aracı.
-- `manufacturing`: JLCPCB profil ve koşullu fab/PCBA kapıları; sayısal değerler henüz `TBD`'dir.
-- `test`: kaynak, baseline, tasarım, otomatik, CAM ve koşullu fiziksel doğrulama planı.
-- `media`: yalnız gizlilik/lisans doğrulandıktan sonra yayımlanacak açıklama görselleri.
+- `hardware/reference/mosaicG5-HAT`: vendored referans KiCad projesi (bkz. `docs/source-register.md` için hash manifesti, `ATTRIBUTION.md` için lisans). Hedef müşteri kartı için ayrı bir yer henüz yok (`INPUT-BLOCKED`).
+- `docs`: kaynak kaydı, karar günlüğü, gate/süreç sözlüğü. Girdi envanteri, RF gereksinimleri, bulgular gibi geri kalanı gerçek müşteri girdisi bekliyor.
+- `automation`: KiCad CLI ortam pini, baseline runner, D2 reproducibility check, signal/plane analiz aracı — dördü de CI'da çalışır durumda.
+- `manufacturing`: JLCPCB profil ve koşullu fab/PCBA kapıları; henüz boş, sayısal değerler `TBD`.
+- `test`: kaynak, baseline, tasarım, otomatik, CAM ve koşullu fiziksel doğrulama planı; henüz boş.
+- `media`: yalnız gizlilik/lisans doğrulandıktan sonra yayımlanacak açıklama görselleri; henüz boş.
 - `releases`: kanıt seviyesine bağlı release sınıfları; başlangıçta release yoktur.
-- `reference`: sabit kaynak commit'i ve SHA-256 bütünlük manifesti.
+- `evidence`: CI'da üretilen gerçek ERC/DRC ham sayı dökümü, kalıcı kanıt olarak.
 
-## Hazırlanan temel belgeler
+## Var olan belgeler
 
-- `docs/input-inventory.md`
-- `docs/current-state-assessment.md`
-- `docs/reference-candidate-assessment.md`
-- `docs/static-kicad-inventory.md`
-- `docs/module-identity.md`
-- `docs/antenna-architecture.md`
-- `docs/rf-requirements.md`
-- `docs/open-questions.md`
-- `docs/decision-log.md`
-- `docs/source-register.md`
-- `docs/review-findings.md`
-- `docs/reference-signal-plane-triage.md`
-- `docs/d2-reproducibility-record.md`
-- `docs/rule-traceability.md`
-- `docs/waivers.md`
-- `automation/validation-pipeline.md`
-- `manufacturing/jlcpcb-profile.md`
-- `manufacturing/stackup-candidate.md`
-- `test/verification-plan.md`
-- `test/environment/preflight.md`
-- `releases/release-checklist.md`
+Aşağıdakiler gerçekten repoda mevcut (bu liste, geçmişte burada olup henüz
+yazılmamış ~15 belgeyi vaat eden bir listenin yerini aldı — o belgeler
+`INPUT-BLOCKED` durumu ve gerçek müşteri girdisi olmadan yazılamaz,
+yazılırsa uydurma olur):
+
+- `docs/decision-log.md` — kabul edilmiş/önerilen kararlar (DEC-006…009)
+- `docs/source-register.md` — referans kaynağın hash/commit kaydı
+- `docs/label-dictionary.md`, `docs/gates/g-annot-contract.md`,
+  `docs/g-debt-corrections.md`, `docs/proposed-backlog.md` — süreç/gate
+  sözlüğü ve iş listesi
+- `automation/validation-pipeline.md` — pipeline'ın 4 aşaması, hangilerinin
+  gerçekten çalıştığı
+- `automation/environment.md` — pinlenmiş KiCad CLI ortamı
+- `evidence/reference-erc-drc-summary.{json,md}` — gerçek ERC/DRC ham
+  sayıları
+
+Henüz yazılmamış (müşteri girdisi veya insan mühendislik kararı bekliyor):
+girdi envanteri, RF gereksinimleri, kural izlenebilirliği, waiver politikası,
+imalat profili, doğrulama planı, release checklist.
 
 ## Kapsam sınırı
 
