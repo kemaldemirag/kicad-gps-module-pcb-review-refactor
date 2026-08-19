@@ -45,6 +45,7 @@ INPUT-BLOCKED -> INPUT-READY -> BASELINED -> RULES-FROZEN
 - `docs/antenna-architecture.md`
 - `docs/rf-requirements.md`
 - `docs/open-questions.md`
+- `docs/decision-log.md`
 - `docs/source-register.md`
 - `docs/review-findings.md`
 - `docs/reference-signal-plane-triage.md`

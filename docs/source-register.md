@@ -49,6 +49,30 @@ a concrete, hash-pinned input: `Kicad/mosaicG5 HAT/mosaicG5_RPi_HAT.kicad_pro`
 at the commit above. Stage 1's fail-closed hash check should compare against
 the four KiCad-file hashes in this manifest.
 
+## Rejected sources
+
+### SRC-AI-001 — Quectel LC76G AI Overview material
+
+- **Status**: REJECTED
+- **Date**: 2026-08-19
+- **Description**: Screen captures and pin/value tables attributed to Quectel
+  LC76G, sourced from a Google AI Overview. Included an 18-pin LCC pin table
+  (VCC\_RF pin 1, ANT\_IN pin 4, V\_BCKP pin 7) and a "Standard Reference
+  Circuit Checklist" (10 µF + 100 nF decoupling, 50 Ω coplanar/microstrip,
+  feed inductor for active antenna, coin-cell on V\_BCKP).
+- **Rejection grounds**:
+  1. No document number, revision, or manufacturer source link.
+  2. Device family is Quectel LC76G — a different module from the project
+     target (Septentrio mosaic-G5 P3H). Mixing the two would produce incorrect
+     rules and values.
+  3. AI-generated summaries without a primary manufacturer document do not meet
+     the workspace source-acceptance criteria.
+- **Decision reference**: DEC-007 in `docs/decision-log.md`.
+- **Historical note**: The LC76G was apparently under consideration at some
+  point. This entry is preserved to prevent future module-identity confusion.
+
+---
+
 ## Target client board
 
 Not yet supplied. No entry until real KiCad source files are received from
