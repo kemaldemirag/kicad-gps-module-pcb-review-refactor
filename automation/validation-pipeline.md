@@ -94,7 +94,10 @@ Actions:
 1. ~~Pin and record the reference candidate commit + file hashes in
    `docs/source-register.md`.~~ Done — commit and SHA-256 manifest recorded,
    files vendored under `hardware/reference/mosaicG5-HAT/`.
-2. Pin the KiCad CLI version and document how to obtain it (container image
-   recommended, since it's absent from this workspace).
+2. ~~Pin the KiCad CLI version and document how to obtain it.~~ Done — see
+   `automation/environment.md` (`kicad/kicad:10.0.5`, Docker). Not yet
+   executed: this session has no running Docker daemon, so Stage 1 still
+   needs to actually be run (dev machine or CI) before any `erc.json`/
+   `drc.json` exists.
 3. Decide where pipeline scripts live under `automation/` (this doc scopes
    them; no implementation script exists yet).
