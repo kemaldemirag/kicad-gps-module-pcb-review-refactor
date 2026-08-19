@@ -3,12 +3,17 @@
 check): run the Stage 1 baseline runner twice against the same pinned input
 and prove the two runs agree.
 
-Canonicalization here is deliberately conservative: it recursively sorts
-object keys and re-serializes with stable formatting, but does NOT strip
-any field by name. If a real kicad-cli run turns out to embed a genuinely
-volatile field (an absolute path, a timestamp, a random UUID regenerated
-per run), add its key to VOLATILE_KEYS below once that's actually been
-observed -- don't guess at kicad-cli's JSON schema in advance of seeing it.
+Canonicalization strips VOLATILE_KEYS and sorts list contents. Both rules
+below are backed by an actual CI run (kicad-cli 10.0.5 against
+hardware/reference/mosaicG5-HAT), not guessed in advance:
+
+- erc.json/drc.json both carry a top-level "date" field set to wall-clock
+  time -- always different between two runs, never a real content change.
+- drc.json's "violations" array is not stably ordered: two runs found the
+  exact same violations (same descriptions, positions, UUIDs) but listed
+  in a different sequence. Sorting every list by its canonicalized content
+  makes order-independent report entries compare equal without hiding an
+  actual change in *which* violations were found.
 """
 
 import argparse
@@ -23,15 +28,17 @@ RUNNER = Path(__file__).resolve().parent / "baseline_runner.py"
 
 # Keys to blank out anywhere in the JSON tree before comparing, because
 # they're expected to vary run-to-run without indicating a real difference.
-# Empty until confirmed against real kicad-cli output -- see module docstring.
-VOLATILE_KEYS: set[str] = set()
+# Confirmed against a real kicad-cli 10.0.5 run -- see module docstring.
+VOLATILE_KEYS: set[str] = {"date"}
 
 
 def canonicalize(obj):
     if isinstance(obj, dict):
         return {k: canonicalize(v) for k, v in sorted(obj.items()) if k not in VOLATILE_KEYS}
     if isinstance(obj, list):
-        return [canonicalize(v) for v in obj]
+        items = [canonicalize(v) for v in obj]
+        items.sort(key=lambda x: json.dumps(x, sort_keys=True))
+        return items
     return obj
 
 
