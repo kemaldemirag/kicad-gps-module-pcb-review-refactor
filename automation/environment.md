@@ -55,6 +55,16 @@ The Docker CLI is present in this workspace, but there is no running Docker
 daemon (`docker info` fails to connect to `/var/run/docker.sock`) — this is a
 sandboxed session without container execution capability. Everything above
 is a **pinned, documented environment spec**, not something this session has
-run or can run. Stage 1 needs to be executed on a developer machine or in CI
-where a Docker daemon is available; do not claim ERC/DRC output exists until
-someone has actually run these commands and committed the result.
+run or can run natively. Stage 1 needs to run on a developer machine or in
+CI where a Docker daemon is available; do not claim ERC/DRC output exists
+until someone (or something) has actually run these commands.
+
+## CI now provides that execution path
+
+`.github/workflows/kicad-baseline.yml` runs `reproducibility_check.py`
+inside `container: kicad/kicad:10.0.5` on every push/PR touching
+`hardware/reference/**` or `automation/**`, and uploads
+`evidence/reproducibility-checks/` as a build artifact. This is where the
+real `erc.json`/`drc.json` and the actual D2 pass/fail result will first
+exist — this development sandbox still can't produce or inspect them
+directly, only trigger the workflow by pushing.

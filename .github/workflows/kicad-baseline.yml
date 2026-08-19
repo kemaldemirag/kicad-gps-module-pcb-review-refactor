@@ -1,0 +1,46 @@
+name: KiCad baseline (Stage 1 + D2 reproducibility)
+
+# Runs automation/validation-pipeline.md's Stage 1/2 for real, inside the
+# pinned kicad/kicad:10.0.5 environment (automation/environment.md). This
+# workflow is the actual execution path Stage 1/2 have been waiting on --
+# the development sandbox that wrote these scripts has no Docker daemon and
+# could not run kicad-cli itself.
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "hardware/reference/**"
+      - "automation/**"
+      - ".github/workflows/kicad-baseline.yml"
+  pull_request:
+    paths:
+      - "hardware/reference/**"
+      - "automation/**"
+      - ".github/workflows/kicad-baseline.yml"
+  workflow_dispatch: {}
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    container:
+      image: kicad/kicad:10.0.5
+    steps:
+      - name: Ensure python3 is available
+        run: command -v python3 || (apt-get update && apt-get install -y --no-install-recommends python3)
+
+      - uses: actions/checkout@v4
+
+      - name: Record kicad-cli version
+        run: kicad-cli --version
+
+      - name: Run Stage 1 + Stage 2 (D2 reproducibility check)
+        run: python3 automation/scripts/reproducibility_check.py
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kicad-baseline-evidence
+          path: evidence/reproducibility-checks/
+          if-no-files-found: warn
