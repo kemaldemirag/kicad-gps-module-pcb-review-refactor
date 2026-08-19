@@ -25,6 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: kicad/kicad:10.0.5
+      # kicad/kicad's default image user can't write to the runner's
+      # mounted _temp dir (EACCES on actions' save-state file commands).
+      # Run as root inside the container to avoid that.
+      options: --user root
     steps:
       - name: Ensure python3 is available
         run: command -v python3 || (apt-get update && apt-get install -y --no-install-recommends python3)
